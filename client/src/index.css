@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "./styles/global.css";
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #F8FAFC;
+  color: #0F172A;
+}
