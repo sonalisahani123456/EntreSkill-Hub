@@ -7,11 +7,23 @@ import {
 } from "lucide-react";
 
 function ProgressOverviewCard() {
+  const [skillProgress, setSkillProgress] = useState(85);
   const [roadmapProgress, setRoadmapProgress] = useState(0);
   const [learningProgress, setLearningProgress] = useState(0);
 
   useEffect(() => {
-    // Roadmap progress
+    // =========================
+    // Skill Assessment Progress
+    // =========================
+    const savedSkillScore = localStorage.getItem("skillScore");
+
+    if (savedSkillScore) {
+      setSkillProgress(Number(savedSkillScore));
+    }
+
+    // =========================
+    // Roadmap Progress
+    // =========================
     const savedSteps = localStorage.getItem(
       "completedRoadmapSteps"
     );
@@ -21,14 +33,19 @@ function ProgressOverviewCard() {
 
       const totalSteps = 6;
 
-      const percentage = Math.round(
-        (completedSteps.length / totalSteps) * 100
+      const percentage = Math.min(
+        100,
+        Math.round(
+          (completedSteps.length / totalSteps) * 100
+        )
       );
 
       setRoadmapProgress(percentage);
     }
 
-    // Learning progress
+    // =========================
+    // Learning Progress
+    // =========================
     const savedLearning = localStorage.getItem(
       "learningProgress"
     );
@@ -36,7 +53,9 @@ function ProgressOverviewCard() {
     if (savedLearning) {
       const progressData = JSON.parse(savedLearning);
 
-      const values = Object.values(progressData);
+      const values = Object.values(progressData).filter(
+        (value) => typeof value === "number"
+      );
 
       if (values.length > 0) {
         const average =
@@ -45,12 +64,12 @@ function ProgressOverviewCard() {
             0
           ) / values.length;
 
-        setLearningProgress(Math.round(average));
+        setLearningProgress(
+          Math.min(100, Math.round(average))
+        );
       }
     }
   }, []);
-
-  const skillProgress = 85;
 
   const overallProgress = Math.round(
     (skillProgress +
@@ -108,7 +127,7 @@ function ProgressOverviewCard() {
 
       </div>
 
-      {/* Overall */}
+      {/* Overall Progress */}
       <div className="mt-8 rounded-2xl bg-blue-50 p-5">
 
         <div className="flex items-end justify-between">
@@ -124,7 +143,13 @@ function ProgressOverviewCard() {
           </div>
 
           <span className="text-sm font-semibold text-slate-600">
-            Keep going!
+            {overallProgress === 100
+              ? "Excellent!"
+              : overallProgress >= 75
+              ? "Almost there!"
+              : overallProgress >= 50
+              ? "Keep going!"
+              : "Great start!"}
           </span>
 
         </div>

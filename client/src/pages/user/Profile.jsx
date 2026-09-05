@@ -1,3 +1,5 @@
+import DashboardLayout from "../../layouts/DashboardLayout";
+
 import { useState } from "react";
 import {
   User,
@@ -9,16 +11,24 @@ import {
   Save,
 } from "lucide-react";
 
+const defaultProfile = {
+  name: "Sonali Sahani",
+  email: "sonali@example.com",
+  phone: "+91 9876543210",
+  location: "Gorakhpur, India",
+  skill: "Web Development",
+  goal: "Build a successful business",
+};
+
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
 
-  const [profile, setProfile] = useState({
-    name: "Sonali Sahani",
-    email: "sonali@example.com",
-    phone: "+91 9876543210",
-    location: "Gorakhpur, India",
-    skill: "Web Development",
-    goal: "Build a successful business",
+  const [profile, setProfile] = useState(() => {
+    const savedProfile = localStorage.getItem("userProfile");
+
+    return savedProfile
+      ? JSON.parse(savedProfile)
+      : defaultProfile;
   });
 
   const handleChange = (e) => {
@@ -40,16 +50,15 @@ function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6 lg:p-8">
+   <DashboardLayout>
 
       {/* Header */}
       <div className="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
-
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
 
           {/* Avatar */}
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white text-3xl font-bold text-blue-600">
-            {profile.name.charAt(0)}
+            {profile.name.charAt(0).toUpperCase()}
           </div>
 
           <div>
@@ -67,14 +76,13 @@ function Profile() {
           </div>
 
         </div>
-
       </div>
 
 
-      {/* Profile Information */}
+      {/* Personal Information */}
       <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
           <div>
             <h2 className="text-xl font-bold text-slate-900">
@@ -88,16 +96,18 @@ function Profile() {
 
           {!isEditing ? (
             <button
+              type="button"
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700"
+              className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700"
             >
               <Edit3 size={17} />
               Edit Profile
             </button>
           ) : (
             <button
+              type="button"
               onClick={handleSave}
-              className="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2 font-semibold text-white transition hover:bg-green-700"
+              className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-4 py-2 font-semibold text-white transition hover:bg-green-700"
             >
               <Save size={17} />
               Save Profile
@@ -117,7 +127,6 @@ function Profile() {
             </label>
 
             <div className="relative">
-
               <User
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -130,7 +139,6 @@ function Profile() {
                 disabled={!isEditing}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
               />
-
             </div>
           </div>
 
@@ -142,7 +150,6 @@ function Profile() {
             </label>
 
             <div className="relative">
-
               <Mail
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -155,7 +162,6 @@ function Profile() {
                 disabled={!isEditing}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
               />
-
             </div>
           </div>
 
@@ -167,7 +173,6 @@ function Profile() {
             </label>
 
             <div className="relative">
-
               <Phone
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -180,7 +185,6 @@ function Profile() {
                 disabled={!isEditing}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
               />
-
             </div>
           </div>
 
@@ -192,7 +196,6 @@ function Profile() {
             </label>
 
             <div className="relative">
-
               <MapPin
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -205,12 +208,10 @@ function Profile() {
                 disabled={!isEditing}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
               />
-
             </div>
           </div>
 
         </div>
-
       </div>
 
 
@@ -252,7 +253,7 @@ function Profile() {
               value={profile.skill}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
             />
           </div>
 
@@ -268,7 +269,7 @@ function Profile() {
               value={profile.goal}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-80"
             />
           </div>
 
@@ -276,7 +277,7 @@ function Profile() {
 
       </div>
 
-    </div>
+    </DashboardLayout>
   );
 }
 

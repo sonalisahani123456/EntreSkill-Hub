@@ -13,6 +13,8 @@ import RecentActivityCard from "../../components/dashboard/RecentActivityCard";
 import UpcomingTasksCard from "../../components/dashboard/UpcomingTasksCard";
 import ProfileCompletionCard from "../../components/dashboard/ProfileCompletionCard";
 import ProgressOverviewCard from "../../components/dashboard/ProgressOverviewCard";
+import UpcomingSessionsCard from "../../components/dashboard/UpcomingSessionsCard";
+
 function UserDashboard() {
   return (
     <DashboardLayout>
@@ -92,7 +94,7 @@ function UserDashboard() {
 
       {/* Bottom Cards */}
       <div className="mt-6 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-
+      <UpcomingSessionsCard />
         <RecentActivityCard />
 
         <UpcomingTasksCard />

@@ -1,10 +1,20 @@
+import { useEffect, useState } from "react";
 import { Target, TrendingUp } from "lucide-react";
 import PremiumCard from "../common/PremiumCard";
 import { useNavigate } from "react-router-dom";
 
-
 function SkillAssessmentCard() {
   const navigate = useNavigate();
+
+  const [skillScore, setSkillScore] = useState(85);
+
+  useEffect(() => {
+    const savedScore = localStorage.getItem("skillScore");
+
+    if (savedScore) {
+      setSkillScore(Number(savedScore));
+    }
+  }, []);
 
   return (
     <PremiumCard
@@ -21,12 +31,17 @@ function SkillAssessmentCard() {
           </span>
 
           <span className="font-bold text-blue-600">
-            85%
+            {skillScore}%
           </span>
         </div>
 
         <div className="h-4 w-full overflow-hidden rounded-full bg-slate-200">
-          <div className="h-full w-[85%] rounded-full bg-blue-600"></div>
+          <div
+            className="h-full rounded-full bg-blue-600 transition-all duration-500"
+            style={{
+              width: `${skillScore}%`,
+            }}
+          />
         </div>
       </div>
 
@@ -71,11 +86,12 @@ function SkillAssessmentCard() {
 
       {/* Button */}
       <button
-  onClick={() => navigate("/skill-assessment")}
-  className="mt-8 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
->
-  Retake Assessment
-</button>
+        type="button"
+        onClick={() => navigate("/skill-assessment")}
+        className="mt-8 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+      >
+        Retake Assessment
+      </button>
 
     </PremiumCard>
   );

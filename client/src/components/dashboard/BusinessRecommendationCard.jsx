@@ -93,7 +93,7 @@ function BusinessRecommendationCard() {
              onClick={() =>
              navigate("/business-details", {
              state: {
-              ideaId: idea.id,
+              businessId: idea.id,
              },
               })
             }

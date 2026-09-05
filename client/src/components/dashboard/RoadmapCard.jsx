@@ -35,7 +35,7 @@ function RoadmapCard() {
         "completedRoadmapSteps",
         JSON.stringify(updatedSteps)
       );
-
+      window.dispatchEvent(new Event("roadmapProgressUpdated"));
       return updatedSteps;
     });
   };

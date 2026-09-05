@@ -14,15 +14,37 @@ function LandingPage() {
   return (
     <>
       <Navbar />
-      <HeroSection />
+
+      {/* Home */}
+      <section id="home" className="scroll-mt-20">
+        <HeroSection />
+      </section>
+
       <TrustedSection />
-      <FeaturesSection />
+
+      {/* Features */}
+      <section id="features" className="scroll-mt-20">
+        <FeaturesSection />
+      </section>
+
       <HowItWorksSection />
-      <BusinessCategoriesSection />
+
+      {/* Business Ideas */}
+      <section id="business-ideas" className="scroll-mt-20">
+        <BusinessCategoriesSection />
+      </section>
+
       <SuccessStoriesSection />
-      <MentorSection />
+
+      {/* Mentors */}
+      <section id="mentors" className="scroll-mt-20">
+        <MentorSection />
+      </section>
+
       <FAQSection />
+
       <CTASection />
+
       <Footer />
     </>
   );

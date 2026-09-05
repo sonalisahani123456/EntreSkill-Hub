@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
   PlayCircle,
@@ -10,6 +11,7 @@ import learningCourses from "../../data/learningCourses";
 
 function LearningHubCard() {
   const [progress, setProgress] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedProgress =
@@ -32,6 +34,7 @@ function LearningHubCard() {
       "learningProgress",
       JSON.stringify(updatedProgress)
     );
+     navigate(`/learning-hub/course/${courseId}`);
   };
 
   const completeCourse = (courseId) => {
@@ -92,7 +95,7 @@ function LearningHubCard() {
               {/* Course Info */}
               <div className="mt-4 flex items-center justify-between text-xs font-medium text-slate-500">
                 <span>
-                  {course.lessons} Lessons
+                  {course.lessons.length} Lessons
                 </span>
 
                 <span>
