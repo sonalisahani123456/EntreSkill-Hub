@@ -10,8 +10,15 @@ import roadmapSteps from "../../data/roadmapSteps";
 
 function RoadmapCard() {
   const [completedSteps, setCompletedSteps] = useState([]);
+  const [selectedBusiness, setSelectedBusiness] = useState(null);
 
   useEffect(() => {
+    try {
+      const savedBusiness = localStorage.getItem("selectedBusiness");
+      if (savedBusiness) setSelectedBusiness(JSON.parse(savedBusiness));
+    } catch (error) {
+      console.error("Could not read selected business:", error);
+    }
     const savedSteps = localStorage.getItem("completedRoadmapSteps");
 
     if (savedSteps) {
@@ -48,8 +55,8 @@ function RoadmapCard() {
 
   return (
     <PremiumCard
-      title="Startup Roadmap"
-      subtitle="Follow these steps to turn your skills into a sustainable business."
+      title={selectedBusiness ? `${selectedBusiness.title} Roadmap` : "Startup Roadmap"}
+      subtitle={selectedBusiness ? `Your step-by-step plan to start ${selectedBusiness.title.toLowerCase()}.` : "Follow these steps to turn your skills into a sustainable business."}
       icon={<Route size={28} />}
     >
       {/* Progress Header */}
