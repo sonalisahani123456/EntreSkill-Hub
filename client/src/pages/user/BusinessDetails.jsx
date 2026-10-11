@@ -28,6 +28,8 @@ function BusinessDetails() {
   };
 
   const handleStartRoadmap = () => {
+    localStorage.setItem("selectedBusiness", JSON.stringify(selectedIdea));
+    localStorage.setItem("activeRoadmapBusinessId", String(selectedIdea.id));
     navigate("/dashboard");
 
     setTimeout(() => {
