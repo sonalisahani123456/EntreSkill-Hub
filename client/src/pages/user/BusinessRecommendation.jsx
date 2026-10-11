@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, CheckCircle2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +7,23 @@ import businessRecommendationData from "../../data/businessRecommendationData";
 
 function BusinessRecommendation() {
   const navigate = useNavigate();
+  const [skillScore, setSkillScore] = useState(() => Number(localStorage.getItem("skillScore") || 0));
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    fetch("http://localhost:5000/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Could not load score");
+        const score = Number(data.user?.skillAssessment?.score || 0);
+        setSkillScore(score);
+        localStorage.setItem("skillScore", String(score));
+      })
+      .catch((error) => console.error("Recommendation score load failed:", error));
+  }, []);
 
   const handleViewDetails = (businessId) => {
     navigate("/business-details", {
@@ -54,7 +72,7 @@ function BusinessRecommendation() {
               </p>
 
               <p className="mt-1 text-2xl font-bold text-blue-600">
-                {localStorage.getItem("skillScore") || "0"}%
+                {skillScore}%
               </p>
             </div>
           </div>
