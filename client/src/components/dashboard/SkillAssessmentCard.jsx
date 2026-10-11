@@ -6,14 +6,22 @@ import { useNavigate } from "react-router-dom";
 function SkillAssessmentCard() {
   const navigate = useNavigate();
 
-  const [skillScore, setSkillScore] = useState(85);
+  const [skillScore, setSkillScore] = useState(() => Number(localStorage.getItem("skillScore") || 0));
 
   useEffect(() => {
-    const savedScore = localStorage.getItem("skillScore");
-
-    if (savedScore) {
-      setSkillScore(Number(savedScore));
-    }
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    fetch("http://localhost:5000/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Could not load assessment");
+        const score = Number(data.user?.skillAssessment?.score || 0);
+        setSkillScore(score);
+        localStorage.setItem("skillScore", String(score));
+      })
+      .catch((error) => console.error("Assessment load failed:", error));
   }, []);
 
   return (
