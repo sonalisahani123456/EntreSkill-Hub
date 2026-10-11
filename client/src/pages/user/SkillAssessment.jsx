@@ -96,27 +96,37 @@ function SkillAssessment() {
     }
   };
 
-  const calculateScore = () => {
-  const totalScore = Object.values(answers).reduce(
-    (sum, value) => sum + value,
-    0
-  );
+  const calculateScore = async () => {
+    const totalScore = Object.values(answers).reduce((sum, value) => sum + value, 0);
+    const maximumScore = questions.length * 5;
+    const calculatedScore = Math.round((totalScore / maximumScore) * 100);
 
-  const maximumScore = questions.length * 5;
+    localStorage.setItem("skillScore", calculatedScore.toString());
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await fetch("http://localhost:5000/api/auth/assessment", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ score: calculatedScore, answers }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Could not save assessment");
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        user.skillAssessment = data.skillAssessment;
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+    } catch (error) {
+      console.error("Assessment save failed:", error);
+      alert("Your score is shown, but could not be saved to your account. Please check that the backend is running.");
+    }
 
-  const calculatedScore = Math.round(
-    (totalScore / maximumScore) * 100
-  );
-
-  // Save score
-  localStorage.setItem(
-    "skillScore",
-    calculatedScore.toString()
-  );
-
-  setScore(calculatedScore);
-  setCompleted(true);
-};
+    setScore(calculatedScore);
+    setCompleted(true);
+  };
 
   if (completed) {
     return (
