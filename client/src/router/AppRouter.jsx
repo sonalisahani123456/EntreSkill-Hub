@@ -1,10 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "../pages/public/LandingPage";
-
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
-
+import ProtectedRoute from "../pages/auth/Protected";
 import UserDashboard from "../pages/user/UserDashboard";
 import Profile from "../pages/user/Profile";
 import Settings from "../pages/user/Settings";
@@ -20,32 +18,22 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
-        {/* User */}
-        <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/skill-assessment" element={<SkillAssessment />} />
-        <Route path="/business-details" element={<BusinessDetails />} />
-
-        <Route path="/learning-hub" element={<LearningHub />} />
-
-        <Route
-          path="/learning-hub/course/:courseId"
-          element={<CourseDetails />}
-        />
-
-        <Route path="/mentor-details" element={<MentorDetails />} />
-        <Route path="/book-session" element={<BookSession />} />
-
-        <Route
-          path="/business-recommendation"
-          element={<BusinessRecommendation />}
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/skill-assessment" element={<SkillAssessment />} />
+          <Route path="/business-details" element={<BusinessDetails />} />
+          <Route path="/learning-hub" element={<LearningHub />} />
+          <Route path="/learning-hub/course/:courseId" element={<CourseDetails />} />
+          <Route path="/mentor-details" element={<MentorDetails />} />
+          <Route path="/book-session" element={<BookSession />} />
+          <Route path="/business-recommendation" element={<BusinessRecommendation />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
