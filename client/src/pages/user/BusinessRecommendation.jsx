@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight, BriefcaseBusiness, CheckCircle2, Sparkles } from
 import { useNavigate } from "react-router-dom";
 
 import businessIdeas from "../../data/businessIdeas";
-import businessRecommendationData from "../../data/BusinessRecommendationData";
+import businessRecommendationData from "../../data/businessRecommendationData";
 
 function BusinessRecommendation() {
   const navigate = useNavigate();
