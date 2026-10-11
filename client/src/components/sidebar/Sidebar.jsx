@@ -61,9 +61,12 @@ function Sidebar() {
       return;
     }
 
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userProfile");
     localStorage.removeItem("isLoggedIn");
 
-    navigate("/");
+    navigate("/login", { replace: true });
   };
 
   const isActive = (title) => {
